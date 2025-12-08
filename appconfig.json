@@ -1,0 +1,19 @@
+{
+  "apps": [
+    {
+      "name": "NovaPromptMaker",
+      "local_exe": "NovaPromptMaker-1.0.1-Setup.exe",
+      "installed_exe": "%LOCALAPPDATA%\\Programs\\nova_promptmaker_v1.0.1\\NovaPromptMaker.exe"
+    },
+    {
+      "name": "NovaCapcutTool",
+      "local_exe": "NovaCapcutTool_v1.82/NovaCapcutTool_v1.8.2.exe"
+      
+    },
+    {
+      "name": "NovaVeo3Downloader",
+      "local_exe": "NovaVeo3Downloader_v2.3/NovaVeo3Downloader_v2.3.exe"
+      
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+name: nova_env
+channels:
+  - defaults
+dependencies:
+  - python=3.10 
+  - pip:
+    - pyside6
+    - requests
+    - pyyaml
+    - pyinstaller
+

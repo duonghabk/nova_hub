@@ -100,6 +100,9 @@ class GoogleDriveClient:
     def _find_file_id_by_name(self, filename: str) -> Optional[str]:
         """
         Find file ID by searching in Google Drive folder.
+        This method uses an undocumented API endpoint used by the web client
+        to list files in a folder, as the official v3 API requires authentication
+        (API key) even for public folders. This might break in the future.
         
         Args:
             filename: Name of file to find
@@ -108,39 +111,47 @@ class GoogleDriveClient:
             File ID if found, None otherwise
         """
         try:
-            # Use Google Drive API v3 files.list endpoint
-            # Query: find file with matching name in the folder
-            query = f"name='{filename}' and '{self.folder_id}' in parents and trashed=false"
-            
-            url = "https://www.googleapis.com/drive/v3/files"
+            logger.debug("Searching for file '%s' in folder '%s' using web API.", filename, self.folder_id)
+            url = "https://drive.google.com/drive/list"
             params = {
-                "q": query,
-                "spaces": "drive",
-                "fields": "files(id,name)",
-                "pageSize": 1
+                "id": self.folder_id,
+                "authuser": "0",
+                "usp": "sharing",  # Simulates being opened from a share link
             }
-            
-            # Try with a simple public access approach first
-            # If that fails, fall back to direct URL construction
-            try:
-                response = self.session.get(url, params=params, timeout=10)
-                response.raise_for_status()
-                data = response.json()
-                files = data.get("files", [])
-                
-                if files:
-                    return files[0]["id"]
-            except:
-                # API may require authentication
-                pass
-            
-            # Fallback: Try direct download URL construction
-            # This works if the file is in a publicly shared folder
-            logger.info("Using fallback method to download: %s", filename)
+
+            response = self.session.get(url, params=params, timeout=15)
+            response.raise_for_status()
+
+            content = response.text
+            if not content.startswith(")]}'"):
+                logger.error("Unexpected response format from Google Drive list API.")
+                return None
+
+            # Strip anti-JSON-hijacking prefix and parse
+            data = json.loads(content[4:])
+
+            # The file list is in a deeply nested structure.
+            file_list = data.get('snapshot', [[]])[0]
+            if not file_list:
+                logger.error("Could not find file list in Google Drive API response.")
+                return None
+
+            # The file entry is a list, e.g., ["file_id", "filename", ...]
+            # Index 1 is the filename. Index 0 is the file ID.
+            for file_data in file_list:
+                if isinstance(file_data, list) and len(file_data) >= 2:
+                    if file_data[1] == filename:
+                        logger.info("Found file ID for '%s': %s", filename, file_data[0])
+                        return file_data[0]
+
+            logger.warning("File '%s' not found in folder '%s'.", filename, self.folder_id)
             return None
 
+        except requests.exceptions.RequestException as e:
+            logger.error("Network error while searching for file '%s': %s", filename, e)
+            return None
         except Exception as e:
-            logger.error("Error searching for file: %s", e)
+            logger.exception("An unexpected error occurred while searching for file '%s': %s", filename, e)
             return None
 
     def _download_file_by_id(self, file_id: str, dest_path: Path, timeout: int = 30) -> Path:

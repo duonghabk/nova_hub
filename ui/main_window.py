@@ -22,7 +22,7 @@ from core.version_manager import VersionManager
 from core.app_loader import AppLoader
 from core.update_worker import UpdateWorker
 from core.logger_config import logger
-from core.auth import mock_authenticate
+from core.auth import authenticate
 
 
 class MainWindow(QMainWindow):
@@ -99,8 +99,7 @@ class MainWindow(QMainWindow):
         ui.error_label.setText("Logging in...")
         ui.login_button.setEnabled(False)
 
-        user_data = mock_authenticate(login_id, password, login_type)
-
+        user_data = authenticate(login_id, password, login_type)
         ui.login_button.setEnabled(True)
 
         if not user_data:
@@ -214,10 +213,10 @@ class MainWindow(QMainWindow):
             if child.widget():
                 child.widget().deleteLater()
 
-        layout.addRow("Username:", QLabel(self.user_data.get("User_Name", "N/A")))
-        layout.addRow("Phone:", QLabel(self.user_data.get("Phone", "N/A")))
-        layout.addRow("Company:", QLabel(self.user_data.get("Company", "N/A")))
-        layout.addRow("Expires:", QLabel(self.user_data.get("Date", "N/A")))
+        layout.addRow("Username:", QLabel(str(self.user_data.get("User_Name", "N/A"))))
+        layout.addRow("Phone:", QLabel(str(self.user_data.get("Phone", "N/A"))))
+        layout.addRow("Company:", QLabel(str(self.user_data.get("Company", "N/A"))))
+        layout.addRow("Expires:", QLabel(str(self.user_data.get("Date", "N/A"))))
 
     def _adjust_ui_size(self):
         """Adjusts window height to fit table content."""

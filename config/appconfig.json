@@ -1,23 +1,23 @@
 {
-  "apps": [
-    {
-      "id": "nova_prompt_maker",
-      "name": "NovaPromptMaker",
-      "version": "1.0.1",
-      "local_exe": "NovaPromptMaker-1.0.1-Setup.exe",
-      "installed_exe": "%LOCALAPPDATA%\\Programs\\nova_promptmaker_v1.0.1\\NovaPromptMaker.exe"
-    },
-    {
-      "id": "nova_capcut_tool",
-      "name": "NovaCapcutTool",
-      "version": "1.8.2",
-      "local_exe": "NovaCapcutTool_v1.82/NovaCapcutTool_v1.8.2.exe"
-    },
-    {
-      "id": "nova_veo3_downloader",
-      "name": "NovaVeo3Downloader",
-      "version": "2.3.0",
-      "local_exe": "NovaVeo3Downloader_v2.3/NovaVeo3Downloader_v2.3.exe"
-    }
-  ]
+    "apps": [
+        {
+            "id": "nova_prompt_maker",
+            "name": "NovaPromptMaker",
+            "version": "1.0.1",
+            "local_path": "NovaPromptMaker-*-Setup.exe",
+            "installed_exe": "%LOCALAPPDATA%\\Programs\\nova_promptmaker_v*\\NovaPromptMaker.exe"
+        },
+        {
+            "id": "nova_capcut_tool",
+            "name": "NovaCapcutTool",
+            "version": "1.8.2",
+            "local_path": "NovaCapcutTool_v*/NovaCapcutTool_v*.exe"
+        },
+        {
+            "id": "nova_veo3_downloader",
+            "name": "NovaVeo3Downloader",
+            "version": "2.1",
+            "local_path": "NovaVeo3Downloader_v*/NovaVeo3Downloader_v*.exe"
+        }
+    ]
 }

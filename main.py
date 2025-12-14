@@ -30,6 +30,12 @@ def main():
         # In ra console rồi exit
         print(f"[FATAL] {e}")
         sys.exit(1)
+    try:
+        api_key = load_api_key()
+    except (FileNotFoundError, ValueError) as e:
+        # In ra console rồi exit
+        print(f"[FATAL] {e}")
+        sys.exit(1)
     # Create the application instance early.
     app = QApplication(sys.argv)
     app.setStyle("WindowsVista")

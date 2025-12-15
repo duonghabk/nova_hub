@@ -3,14 +3,14 @@
         {
             "id": "nova_prompt_maker",
             "name": "NovaPromptMaker",
-            "version": "1.0.1",
+            "version": "1.0.0",
             "local_path": "NovaPromptMaker-*-Setup.exe",
             "installed_exe": "%LOCALAPPDATA%\\Programs\\nova_promptmaker_v*\\NovaPromptMaker.exe"
         },
         {
             "id": "nova_capcut_tool",
             "name": "NovaCapcutTool",
-            "version": "1.8.2",
+            "version": "1.8.0",
             "local_path": "NovaCapcutTool_v*/NovaCapcutTool_v*.exe"
         },
         {
